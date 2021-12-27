@@ -63,16 +63,66 @@ namespace UnidadTrabajo.bussisnesLayer
                          {
                              //Cliente
                             obtieneCliente(factura, context);
+                            //Detalle de la factura
+                            obtieneDetalle(factura, context);
                          }
                      }
                  }
                  return result;
             }
             catch (Exception ex)
-            {           var error = ex.Message;  
+            {   var error = ex.Message;  
                 return result;
             }
         }
+        private void obtieneDetalle(Factura factura, OracleConnection context)
+        {
+            var result = new List<Fac_Factura_Detalle>();
+            var notx = factura.FacNotx;
+            var consulta = @"SELECT PAICOD, EMPCOD , TIECOD ,CAJCOD ,FACNOTX , FACNOLIN , ARTCOD , FACCANFAC , FACPREFAC , FACCOSFAC , FACARTDES , FACCANDES , FACMONIVA , FACMONSINIVA , FACLFECALT 
+                                FROM FAC_FACTURA_DETALLE WHERE EMPCOD = '00002' AND FACNOTX = @notx"+ notx;
+            var cmd = new OracleCommand(consulta, context);
+            //cmd.Parameters.Add(new OracleParameter("@notx", OracleDbType.Int32)).Value = notx;
+            //cmd.Parameters.Add(new OracleParameter("@notx", notx).Value);
+
+            cmd.CommandType = System.Data.CommandType.Text;
+
+            try
+            {
+                 using( var dr = cmd.ExecuteReader())
+                 {
+                    while (dr.Read())
+                    {
+                        var oFactura_Detalle = new Fac_Factura_Detalle{
+                            PaiCod = dr.GetString(0),
+                            EmpCod = dr.GetString(1),
+                            TieCod = dr.GetString(2),
+                            CajCod = dr.GetString(3),
+                            FacNotx = dr.GetInt32(4),
+                            FacNoLin = dr.GetInt32(5),
+                            ArtCod = dr.GetString(6),
+                            FacCanFac = dr.GetInt32(7),
+                            FacPreFac = dr.GetDecimal(8),
+                            FacCosFac = dr.GetDecimal(9),
+                            FacArtDes = dr.GetString(10),
+                            FacCantDes = dr.GetInt32(11),
+                            FacMonIVA = dr.GetDecimal(12),
+                            FacMonSinIVA = dr.GetDecimal(13),
+                            FacFecAlt = dr.GetDateTime(14)
+                        };
+
+                        result.Add(oFactura_Detalle);
+                    }
+                 }
+            }
+            catch (Exception ex)
+            {
+                var error = ex.Message;
+                throw;
+            }
+            //throw new NotImplementedException();
+        }
+
         private void obtieneCliente(Factura factura, OracleConnection context)
         {
             var consulta = @"SELECT PAICOD, EMPCOD, CLICOD, CLIRAZSOC, CLINIT, CLIDIRFAC, CLIFECALT, CLIUSUALT, CLIEST, CLINOM

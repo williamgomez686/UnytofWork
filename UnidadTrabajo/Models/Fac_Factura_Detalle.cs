@@ -14,7 +14,7 @@ namespace UnidadTrabajo.Models
         public string CodSubPro2 { get; set; }
         public int FacCanFac { get; set; }//Cantidad Facturada
         public decimal FacPreFac { get; set; }//Precio++++++++++++
-        public int FacCosFac { get; set; }//Costo
+        public decimal FacCosFac { get; set; }//Costo
         public string FacEstLin { get; set; }//Estado de la Linea (A/N)
         public string FacEsc { get; set; }//Escaneado (si/no)
         public string FacEstOfe { get; set; }//estado oferta (S/N)
