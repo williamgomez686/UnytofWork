@@ -10,7 +10,7 @@ namespace UnidadTrabajo.Models
         public int FacNotx { get; set; }//Notx
         public int FacNoLin { get; set; }//numero de linea
         public string ArtCod { get; set; }//Codigo del articulo
-        public string CodSubPro1 { get; set; }
+        public string CodSubPro1 { get; set; }//
         public string CodSubPro2 { get; set; }
         public int FacCanFac { get; set; }//Cantidad Facturada
         public decimal FacPreFac { get; set; }//Precio++++++++++++
