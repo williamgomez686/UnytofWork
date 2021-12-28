@@ -17,7 +17,7 @@ namespace UnidadTrabajo.bussisnesLayer
                                 FROM FAC_FACTURA ff 
                                 WHERE empcod = '00002'
                                 AND TIECOD = '00001'
-                                AND FACNOTX IN (96517, 96379)";
+                                AND FACNOTX IN (96517, 128591, 128241)";
             
             try
             {
@@ -61,9 +61,9 @@ namespace UnidadTrabajo.bussisnesLayer
                          //obtenemos al cliente
                          foreach(var factura in result)
                          {
-                             //Cliente
-                            obtieneCliente(factura, context);
-                            //Detalle de la factura
+                                //Cliente
+                            //obtieneCliente(factura, context); 
+                                //Detalle de la factura
                             obtieneDetalle(factura, context);
                          }
                      }
@@ -75,12 +75,61 @@ namespace UnidadTrabajo.bussisnesLayer
                 return result;
             }
         }
+        public Factura verFactura(int id)
+        {
+            var consulta = @"SELECT PAICOD , EMPCOD , TIECOD , CAJCOD , FACNOTX ,TTRCOD , VENCOD , CLICOD , FACANOMDE , FACANIT , FACDIRFAC , FACDIRENT , FACEST 
+                                , FACOBS , FACIVA , FACTASCAM , FACSER , FACNUM , FACTOTFAC , FACTOTDES , FACFECALT , FACUSUALT ,FACHORALT 
+                                FROM FAC_FACTURA ff 
+                                WHERE empcod = '00002'
+                                AND TIECOD = '00001'
+                                AND FACNOTX =" + id;
+            var result = new Factura();
+            using(var context = new OracleConnection(parametros.ConnectionString))
+            {
+                context.Open();
+                
+                var cmd = new OracleCommand(consulta, context);
+
+                using(var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+
+                    result.PaiCod = Convert.ToString(reader["PAICOD"]);
+                        //result.PaiCod = reader.GetString(0);
+                        result.EmpCod = reader.GetString(1);
+                        result.TieCod = reader.GetString(2);
+                        result.CajCod = reader.GetString(3);
+                        result.FacNotx = reader.GetInt32(4);
+                        result.TtrCod = reader.GetString(5);
+                        result.VenCod = reader.GetString(6);
+                        result.CliCod = reader.GetString(7);   
+                        result.FacANomDe = reader.GetString(8);
+                        result.FacANit = reader.GetString(9);
+                        result.FacDirFac = reader.GetString(10);
+                        result.FacDirRent = reader.GetString(11);
+                        result.FacEst = reader.GetString(12);
+                        result.FacObs = reader.GetString(13);
+                        result.FacIva = reader.GetInt32(14);
+                        result.FacTasCam = reader.GetInt32(15);
+                        result.FacSer = reader.GetString(16);
+                        result.FacNum = reader.GetInt32(17);
+                        result.FacToFac = reader.GetInt32(18);
+                        result.FacToDes = reader.GetInt32(19);
+                        result.FacFecAlt = reader.GetDateTime(20);
+                        result.FacUsuAlt = reader.GetString(21);
+                        result.FacHoraAlt= reader.GetString(22);
+                }
+
+                obtieneDetalle(result, context);
+            }
+            return result;
+        }
         private void obtieneDetalle(Factura factura, OracleConnection context)
         {
             var result = new List<Fac_Factura_Detalle>();
             var notx = factura.FacNotx;
             var consulta = @"SELECT PAICOD, EMPCOD , TIECOD ,CAJCOD ,FACNOTX , FACNOLIN , ARTCOD , FACCANFAC , FACPREFAC , FACCOSFAC , FACARTDES , FACCANDES , FACMONIVA , FACMONSINIVA , FACLFECALT 
-                                FROM FAC_FACTURA_DETALLE WHERE EMPCOD = '00002' AND FACNOTX = @notx"+ notx;
+                                FROM FAC_FACTURA_DETALLE WHERE EMPCOD = '00002' AND FACNOTX =" + notx;
             var cmd = new OracleCommand(consulta, context);
             //cmd.Parameters.Add(new OracleParameter("@notx", OracleDbType.Int32)).Value = notx;
             //cmd.Parameters.Add(new OracleParameter("@notx", notx).Value);
@@ -112,6 +161,7 @@ namespace UnidadTrabajo.bussisnesLayer
                         };
 
                         result.Add(oFactura_Detalle);
+                        factura.detalle = result;
                     }
                  }
             }
@@ -122,7 +172,6 @@ namespace UnidadTrabajo.bussisnesLayer
             }
             //throw new NotImplementedException();
         }
-
         private void obtieneCliente(Factura factura, OracleConnection context)
         {
             var consulta = @"SELECT PAICOD, EMPCOD, CLICOD, CLIRAZSOC, CLINIT, CLIDIRFAC, CLIFECALT, CLIUSUALT, CLIEST, CLINOM
