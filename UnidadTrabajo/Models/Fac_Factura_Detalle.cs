@@ -1,10 +1,8 @@
 using System;
 namespace UnidadTrabajo.Models
 {
-    public class Fac_Factura_Detalle
+    public class Fac_Factura_Detalle : mmc
     {
-        public string PaiCod { get; set; }//pais
-        public string EmpCod { get; set; }//Empresa
         public string TieCod { get; set; }//Codigo de la Tienda
         public string CajCod { get; set; }//Codigo de Cajero
         public int FacNotx { get; set; }//Notx

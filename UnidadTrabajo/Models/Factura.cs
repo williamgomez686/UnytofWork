@@ -5,8 +5,7 @@ namespace UnidadTrabajo.Models
 {
     public class Factura : mmc
     {
-        //public string PaiCod { get; set; }//pais
-        //public string EmpCod { get; set; }//Empresa
+
         public string TieCod { get; set; }//Codigo de la Tienda
         public string CajCod { get; set; }//Codigo de Cajero
         public int FacNotx { get; set; }//Notx
@@ -26,7 +25,6 @@ namespace UnidadTrabajo.Models
         public int FacNum { get; set; }//Numero de la factura
         public int FacToFac { get; set; }
         public int FacToDes { get; set; }
-        //public DateTime FacFecAlt { get; set; }
         public string FacUsuAlt { get; set; }
         public string FacHoraAlt {get; set;}
         public CXC_CLIENTES CliCodId {get; set;}
