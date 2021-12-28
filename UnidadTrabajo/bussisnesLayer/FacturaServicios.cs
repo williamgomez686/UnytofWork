@@ -52,7 +52,7 @@ namespace UnidadTrabajo.bussisnesLayer
                                 FacNum = reader.GetInt32(17),
                                 FacToFac = reader.GetInt32(18),
                                 FacToDes = reader.GetInt32(19),
-                                FacFecAlt = reader.GetDateTime(20),
+                                FechAlt = reader.GetDateTime(20),
                                 FacUsuAlt = reader.GetString(21),
                                 FacHoraAlt= reader.GetString(22)
                             };
@@ -115,7 +115,7 @@ namespace UnidadTrabajo.bussisnesLayer
                         result.FacNum = reader.GetInt32(17);
                         result.FacToFac = reader.GetInt32(18);
                         result.FacToDes = reader.GetInt32(19);
-                        result.FacFecAlt = reader.GetDateTime(20);
+                        result.FechAlt = reader.GetDateTime(20);
                         result.FacUsuAlt = reader.GetString(21);
                         result.FacHoraAlt= reader.GetString(22);
                 }
