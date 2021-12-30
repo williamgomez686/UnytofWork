@@ -43,7 +43,19 @@ namespace UnidadTrabajo.Controllers
             var rsultado = factura.verFactura(128241);
             return View(rsultado);
         }
+        public IActionResult json()
+        {
+            return View();
+        }
 
+        #region "API"        
+        public JsonResult jsonFactura()
+        {
+            var factura = new FacturaServicios();
+            var rsultado = factura.verFactura(128241);
+            return Json(rsultado);
+        }
+        #endregion
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

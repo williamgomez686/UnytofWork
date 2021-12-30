@@ -15654,6 +15654,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "/Users/infwilliam/Documents/repos/netcore/UnytofWork/UnidadTrabajo/Views/PDF/json.cshtml",
+      "TargetPath": "Views\\PDF\\json.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/Users/infwilliam/Documents/repos/netcore/UnytofWork/UnidadTrabajo/Views/Home/Index.cshtml",
       "TargetPath": "Views\\Home\\Index.cshtml",
       "FileKind": "mvc"
