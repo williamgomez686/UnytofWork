@@ -17,7 +17,7 @@ namespace UnidadTrabajo.bussisnesLayer
                                 FROM FAC_FACTURA ff 
                                 WHERE empcod = '00002'
                                 AND TIECOD = '00001'
-                                AND FACNOTX IN (96517, 96379)";
+                                AND FACNOTX IN (96517, 128591, 128241)";
             
             try
             {
@@ -52,7 +52,7 @@ namespace UnidadTrabajo.bussisnesLayer
                                 FacNum = reader.GetInt32(17),
                                 FacToFac = reader.GetInt32(18),
                                 FacToDes = reader.GetInt32(19),
-                                FacFecAlt = reader.GetDateTime(20),
+                                FechAlt = reader.GetDateTime(20),
                                 FacUsuAlt = reader.GetString(21),
                                 FacHoraAlt= reader.GetString(22)
                             };
@@ -61,17 +61,120 @@ namespace UnidadTrabajo.bussisnesLayer
                          //obtenemos al cliente
                          foreach(var factura in result)
                          {
-                             //Cliente
-                            obtieneCliente(factura, context);
+                                //Cliente
+                            //obtieneCliente(factura, context); 
+                                //Detalle de la factura
+                            obtieneDetalle(factura, context);
                          }
                      }
                  }
                  return result;
             }
             catch (Exception ex)
-            {           var error = ex.Message;  
+            {   var error = ex.Message;  
                 return result;
             }
+        }
+        public Factura verFactura(int id)
+        {
+            var consulta = @"SELECT PAICOD , EMPCOD , TIECOD , CAJCOD , FACNOTX ,TTRCOD , VENCOD , CLICOD , FACANOMDE , FACANIT , FACDIRFAC , FACDIRENT , FACEST 
+                                , FACOBS , FACIVA , FACTASCAM , FACSER , FACNUM , FACTOTFAC , FACTOTDES , FACFECALT , FACUSUALT ,FACHORALT 
+                                FROM FAC_FACTURA ff 
+                                WHERE empcod = '00002'
+                                AND TIECOD = '00001'
+                                AND FACNOTX =" + id;
+            var result = new Factura();
+            using(var context = new OracleConnection(parametros.ConnectionString))
+            {
+                context.Open();
+                
+                var cmd = new OracleCommand(consulta, context);
+
+                using(var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+
+                    result.PaiCod = Convert.ToString(reader["PAICOD"]);
+                        //result.PaiCod = reader.GetString(0);
+                        result.EmpCod = reader.GetString(1);
+                        result.TieCod = reader.GetString(2);
+                        result.CajCod = reader.GetString(3);
+                        result.FacNotx = reader.GetInt32(4);
+                        result.TtrCod = reader.GetString(5);
+                        result.VenCod = reader.GetString(6);
+                        result.CliCod = reader.GetString(7);   
+                        result.FacANomDe = reader.GetString(8);
+                        result.FacANit = reader.GetString(9);
+                        result.FacDirFac = reader.GetString(10);
+                        result.FacDirRent = reader.GetString(11);
+                        result.FacEst = reader.GetString(12);
+                        result.FacObs = reader.GetString(13);
+                        result.FacIva = reader.GetInt32(14);
+                        result.FacTasCam = reader.GetInt32(15);
+                        result.FacSer = reader.GetString(16);
+                        result.FacNum = reader.GetInt32(17);
+                        result.FacToFac = reader.GetInt32(18);
+                        result.FacToDes = reader.GetInt32(19);
+                        result.FechAlt = reader.GetDateTime(20);
+                        result.FacUsuAlt = reader.GetString(21);
+                        result.FacHoraAlt= reader.GetString(22);
+                }
+
+                obtieneDetalle(result, context);
+            }
+            return result;
+        }
+        private void obtieneDetalle(Factura factura, OracleConnection context)
+        {
+            var result = new List<Fac_Factura_Detalle>();
+            var notx = factura.FacNotx;
+            var consulta = @"SELECT PAICOD, EMPCOD , TIECOD ,CAJCOD ,FACNOTX , FACNOLIN , ARTCOD , FACCANFAC , FACPREFAC , FACCOSFAC , FACARTDES , FACCANDES , FACMONIVA , FACMONSINIVA , FACLFECALT 
+                                FROM FAC_FACTURA_DETALLE WHERE EMPCOD = '00002' AND FACNOTX =" + notx;
+            var cmd = new OracleCommand(consulta, context);
+            //cmd.Parameters.Add(new OracleParameter("@notx", OracleDbType.Int32)).Value = notx;
+            //cmd.Parameters.Add(new OracleParameter("@notx", notx).Value);
+
+            cmd.CommandType = System.Data.CommandType.Text;
+
+            try
+            {
+                 using( var dr = cmd.ExecuteReader())
+                 {
+                    while (dr.Read())
+                    {
+                        var oFactura_Detalle = new Fac_Factura_Detalle{
+                            PaiCod = dr.GetString(0),
+                            EmpCod = dr.GetString(1),
+                            TieCod = dr.GetString(2),
+                            CajCod = dr.GetString(3),
+                            FacNotx = dr.GetInt32(4),
+                            FacNoLin = dr.GetInt32(5),
+                            ArtCod = dr.GetString(6),
+                            FacCanFac = dr.GetInt32(7),
+                            FacPreFac = dr.GetDecimal(8),
+                            FacCosFac = dr.GetDecimal(9),
+                            FacArtDes = dr.GetString(10),
+                            FacCantDes = dr.GetInt32(11),
+                            FacMonIVA = dr.GetDecimal(12),
+                            FacMonSinIVA = dr.GetDecimal(13),
+                            FacFecAlt = dr.GetDateTime(14)
+                        };
+
+                        result.Add(oFactura_Detalle);
+                        factura.detalle = result;
+                    }
+                 }
+                  foreach(var detalle in factura.detalle)
+                  {
+                      ObtenerArticulo(detalle, context);
+                  }
+            }
+            catch (Exception ex)
+            {
+                var error = ex.Message;
+                throw;
+            }
+            //throw new NotImplementedException();
         }
         private void obtieneCliente(Factura factura, OracleConnection context)
         {
@@ -104,6 +207,53 @@ namespace UnidadTrabajo.bussisnesLayer
                             CliNom = reader.GetString(9)
                             //CliShFchNac = reader.GetDateTime(11),
                             //CliShSex = reader.GetString(12)
+                    };
+                }       
+            }
+            catch (System.Exception ex)
+            {
+                var error = ex.Message;
+                throw;
+            }
+        }
+
+        private void ObtenerArticulo(Fac_Factura_Detalle factura_Detalle, OracleConnection context)
+        {
+            var articulo = factura_Detalle.ArtCod;
+             var consulta = @"SELECT PAICOD , EMPCOD  , ARTCOD , ARTDES , ARTDESCOR , ARTFECALT , ARTFECMOD 
+                                FROM INV_ARTICULO ia 
+                                WHERE EMPCOD  = '00002'                                
+                                AND ARTCOD ='" + articulo +"'";
+                                
+            var cmd = new OracleCommand(consulta, context);
+            
+            cmd.CommandType = System.Data.CommandType.Text;
+                 
+            try
+            {
+                    using(var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+                    /*
+                    var oArticulo = new Inv_Articulo
+                    {
+                            //PaiCod = Convert.ToString(reader["PAICOD"]),
+                            PaiCod = reader.GetString(0),
+                            EmpCod = reader.GetString(1),
+                            ArtCod = reader.GetString(2),
+                            ArtDes = reader.GetString(3),
+                            ArtDesCor = reader.GetString(4),
+                            FechAlt = reader.GetDateTime(5),
+                            FechMod = reader.GetDateTime(6),
+                    };*/
+                    factura_Detalle.Articulo = new Inv_Articulo{
+                        PaiCod = Convert.ToString(reader["PAICOD"]),
+                        EmpCod = Convert.ToString(reader["EMPCOD"]),
+                        ArtCod = Convert.ToString(reader["ARTCOD"]),
+                        ArtDes = Convert.ToString(reader["ARTDES"]),
+                        ArtDesCor = Convert.ToString(reader["ARTDESCOR"]),
+                        FechAlt = Convert.ToDateTime(reader["ARTFECALT"]),
+                        FechMod = Convert.ToDateTime(reader["ARTFECMOD"])
                     };
                 }       
             }

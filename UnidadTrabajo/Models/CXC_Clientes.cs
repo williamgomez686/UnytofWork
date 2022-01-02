@@ -1,10 +1,8 @@
 using System;
 namespace UnidadTrabajo.Models
 {
-    public class CXC_CLIENTES
+    public class CXC_CLIENTES : mmc
     {
-        public string PaiCod { get; set; }//pais
-        public string EmpCod { get; set; }//Empresa
         public string  CliCod { get; set; }
         public string  CliRazSoc { get; set; }
         //public string ?CliTel1 { get; set; }
@@ -17,4 +15,4 @@ namespace UnidadTrabajo.Models
         //public DateTime ?CliShFchNac { get; set; }
         //public string ?CliShSex { get; set; }
     }
-}//, CLIEST , CLINOM , CLISHFCHNAC , CLISHSEX
+}

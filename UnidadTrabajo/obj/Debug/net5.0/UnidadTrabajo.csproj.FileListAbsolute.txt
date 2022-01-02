@@ -91,3 +91,4 @@
 /Users/infwilliam/Documents/repos/netcore/UnytofWork/UnidadTrabajo/bin/Debug/net5.0/runtimes/osx/lib/netcoreapp2.0/System.DirectoryServices.Protocols.dll
 /Users/infwilliam/Documents/repos/netcore/UnytofWork/UnidadTrabajo/bin/Debug/net5.0/runtimes/win/lib/netcoreapp2.0/System.DirectoryServices.Protocols.dll
 /Users/infwilliam/Documents/repos/netcore/UnytofWork/UnidadTrabajo/bin/Debug/net5.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/infwilliam/Documents/repos/netcore/UnytofWork/UnidadTrabajo/obj/Debug/net5.0/Razor/Views/PDF/json.cshtml.g.cs

@@ -1,10 +1,8 @@
 using System;
 namespace UnidadTrabajo.Models
 {
-    public class Fac_Factura_Detalle
+    public class Fac_Factura_Detalle : mmc
     {
-        public string PaiCod { get; set; }//pais
-        public string EmpCod { get; set; }//Empresa
         public string TieCod { get; set; }//Codigo de la Tienda
         public string CajCod { get; set; }//Codigo de Cajero
         public int FacNotx { get; set; }//Notx
@@ -14,7 +12,7 @@ namespace UnidadTrabajo.Models
         public string CodSubPro2 { get; set; }
         public int FacCanFac { get; set; }//Cantidad Facturada
         public decimal FacPreFac { get; set; }//Precio++++++++++++
-        public int FacCosFac { get; set; }//Costo
+        public decimal FacCosFac { get; set; }//Costo
         public string FacEstLin { get; set; }//Estado de la Linea (A/N)
         public string FacEsc { get; set; }//Escaneado (si/no)
         public string FacEstOfe { get; set; }//estado oferta (S/N)
@@ -26,6 +24,7 @@ namespace UnidadTrabajo.Models
         public decimal FacMonIVA {get; set;}// Monto Con IVA
         public decimal FacMonSinIVA { get; set; }// Monto sin IVA
         public string FacObsDet { get; set; }//Observaciones 
-        public DateTime FacFecAlt { get; set; }//Fecha de Alta       
+        public DateTime FacFecAlt { get; set; }//Fecha de Alta  
+        public Inv_Articulo Articulo {get; set;}//referencia al articulo     
     }
 }
