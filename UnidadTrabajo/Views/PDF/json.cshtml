@@ -43,6 +43,7 @@
             })
             .then(function (mijson) {
                 let detaller = document.querySelector('#cabecera')
+                console.log(mijson);
                 console.log("Cabecera");
                 console.log(mijson.facSer);
                 console.log(mijson.facNum);
@@ -53,9 +54,14 @@
                 console.log(mijson.facDirRent);
                 console.log("nivel detalle");
 
-                var prueba = mijson.facNum;
+                var prueba = mijson.facSer;
                 detaller.innerHTML = `<p> ${prueba}</p>`;
-                detaller.innerHTML = `<p> ${mijson.facANomDe}</p>`;
+                detaller.innerHTML = `<p> ${mijson.facNum}</p>`;
+                detaller.innerHTML = `<p> ${mijson.fechAlt}</p>`;
+                detaller.innerHTML = `<p> ${mijson.facHoraAlt}</p>`;
+                detaller.innerHTML = `<p> ${mijson.facANit}</p>`;
+                detaller.innerHTML = `<p> ${mijson.facAnomDe}</p>`;
+                detaller.innerHTML = `<p> ${mijson.facDirRent}</p>`;
                 console.log("un ciclo for");
                 let Resultado = document.querySelector('#tabla');
 
@@ -67,17 +73,19 @@
                 for (let i = 0; i < mijson.detalle.length; i++)
                 {
                     console.log(mijson.detalle[i].facCanFac + " " + mijson.detalle[i].artCod + " " + mijson.detalle[i].facDes + " " + mijson.detalle[i].facPreFac )
+                    
                     Resultado.innerHTML += `
                     <tr> 
                         <td>${mijson.detalle[i].facCanFac}</td>
-                        <td>${mijson.detalle[i].artCod}</td>
+                        <td>${mijson.detalle[i].artCod +` ` +mijson.detalle[i].articulo.artDesCor}</td>
                         <td>${mijson.detalle[i].facDes}</td>
                         <td>${mijson.detalle[i].facPreFac}</td>
                         <td> ${resul = (parseInt(mijson.detalle[i].facCanFac)) * (parseInt(mijson.detalle[i].facPreFac))} </td>
                     </tr>
                     `;
                 }
-                //console.log(miResultado)
+                console.log(mijson.detalle[1].articulo.artDesCor)
+                //<td>${mijson.detalle[i].artCod }</td>
                 //document.getElementById("#res").innerHTML = Resultado;
             })
     }

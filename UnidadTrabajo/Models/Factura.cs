@@ -28,6 +28,7 @@ namespace UnidadTrabajo.Models
         public string FacUsuAlt { get; set; }
         public string FacHoraAlt {get; set;}
         public CXC_CLIENTES CliCodId {get; set;}
+        public Inv_Articulo Articulo { get; set; }
 
        public Factura()
         {

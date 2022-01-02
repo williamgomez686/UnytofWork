@@ -164,6 +164,10 @@ namespace UnidadTrabajo.bussisnesLayer
                         factura.detalle = result;
                     }
                  }
+                  foreach(var detalle in factura.detalle)
+                  {
+                      ObtenerArticulo(detalle, context);
+                  }
             }
             catch (Exception ex)
             {
@@ -203,6 +207,53 @@ namespace UnidadTrabajo.bussisnesLayer
                             CliNom = reader.GetString(9)
                             //CliShFchNac = reader.GetDateTime(11),
                             //CliShSex = reader.GetString(12)
+                    };
+                }       
+            }
+            catch (System.Exception ex)
+            {
+                var error = ex.Message;
+                throw;
+            }
+        }
+
+        private void ObtenerArticulo(Fac_Factura_Detalle factura_Detalle, OracleConnection context)
+        {
+            var articulo = factura_Detalle.ArtCod;
+             var consulta = @"SELECT PAICOD , EMPCOD  , ARTCOD , ARTDES , ARTDESCOR , ARTFECALT , ARTFECMOD 
+                                FROM INV_ARTICULO ia 
+                                WHERE EMPCOD  = '00002'                                
+                                AND ARTCOD ='" + articulo +"'";
+                                
+            var cmd = new OracleCommand(consulta, context);
+            
+            cmd.CommandType = System.Data.CommandType.Text;
+                 
+            try
+            {
+                    using(var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+                    /*
+                    var oArticulo = new Inv_Articulo
+                    {
+                            //PaiCod = Convert.ToString(reader["PAICOD"]),
+                            PaiCod = reader.GetString(0),
+                            EmpCod = reader.GetString(1),
+                            ArtCod = reader.GetString(2),
+                            ArtDes = reader.GetString(3),
+                            ArtDesCor = reader.GetString(4),
+                            FechAlt = reader.GetDateTime(5),
+                            FechMod = reader.GetDateTime(6),
+                    };*/
+                    factura_Detalle.Articulo = new Inv_Articulo{
+                        PaiCod = Convert.ToString(reader["PAICOD"]),
+                        EmpCod = Convert.ToString(reader["EMPCOD"]),
+                        ArtCod = Convert.ToString(reader["ARTCOD"]),
+                        ArtDes = Convert.ToString(reader["ARTDES"]),
+                        ArtDesCor = Convert.ToString(reader["ARTDESCOR"]),
+                        FechAlt = Convert.ToDateTime(reader["ARTFECALT"]),
+                        FechMod = Convert.ToDateTime(reader["ARTFECMOD"])
                     };
                 }       
             }

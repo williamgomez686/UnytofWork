@@ -24,6 +24,7 @@ namespace UnidadTrabajo.Models
         public decimal FacMonIVA {get; set;}// Monto Con IVA
         public decimal FacMonSinIVA { get; set; }// Monto sin IVA
         public string FacObsDet { get; set; }//Observaciones 
-        public DateTime FacFecAlt { get; set; }//Fecha de Alta       
+        public DateTime FacFecAlt { get; set; }//Fecha de Alta  
+        public Inv_Articulo Articulo {get; set;}//referencia al articulo     
     }
 }
